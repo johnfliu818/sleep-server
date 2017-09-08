@@ -1,0 +1,19 @@
+{
+  "name": "sleep-server",
+  "version": "1.0.0",
+  "description": "Emulates a server that has variable response time.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnfliu818/sleep-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnfliu818/sleep-server/issues"
+  },
+  "homepage": "https://github.com/johnfliu818/sleep-server#readme"
+}
