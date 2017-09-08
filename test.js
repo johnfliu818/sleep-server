@@ -1,3 +1,7 @@
 var sleepserver = require('./index.js')
 
-sleepserver.start(3500)
+let port = 3600
+
+sleepserver.start(port, function() {
+    console.log("listening on http://localhost:%s", port)
+})

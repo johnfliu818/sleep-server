@@ -1,6 +1,6 @@
 var http = require('http')
 
-function start(port) {
+function start(port, callback) {
     function handleRequest(req, resp) {
         // console.log(req.url)
         if (req.url != null && req.url.startsWith('/sleep/')) {
@@ -19,9 +19,7 @@ function start(port) {
     }
 
     var server = http.createServer(handleRequest)
-    server.listen(port, function() {
-        console.log("Server listening on http://localhost:%s", port)
-    })
+    server.listen(port, callback)
 }
 
 exports.start = start
