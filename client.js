@@ -1,3 +1,5 @@
+#!/usr/bin/env 
+
 var http = require('http')
 
 if (process.argv.length < 3) {

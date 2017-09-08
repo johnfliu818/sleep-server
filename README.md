@@ -6,28 +6,19 @@ Sometimes when I encounter a web server with slow response time, I would like to
 `sleep-server` acts as a dummy database/resource server, with a well defined response time, so you can determine the performance characteristic of your web server under load.
 
 
-## Install
+## Usage
 
-`npm install sleep-server`
+Install with `npm install sleep-server -g`
 
-then create a index.js file like below:
+Then type `sleep-server 3600` to start server on port 3600
 
-    var sleepserver = require('sleep-server')
-
-    let port = 3600
-
-    sleepserver.start(port, function() {
-        console.log("listening on http://localhost:%s", port)
-    })
-
-then `node index.js`
+Type `http://localhost:3600/sleep/1000` in browser to test it. (here 1000 tells sleep-server to delay for 1000ms before responding)
 
 
-## Using sleep-server
+## Load testing with sleep-client
 
-Open a browser, and type `http://localhost:3600/sleep/3000` in the URL.
+Now the server is running, we can test it using sleep-client, which came in the same package.
 
-It should wait 3 seconds, then return a result like this:
-`{"success":true,"url":"/sleep/3000","timeout":3000}`
+Open another terminal or command prompt, and type `sleep-client http://localhost:3600/sleep/5000`
 
-The number `3000` in `/sleep/3000` tells the server to sleep 3000ms before it responds. This emulates a database/resource server that needs time to process data before responding.
+It should run for about 15 seconds, periodically reporting back the average response time. An efficient server should have the average response time very close to 5000ms.

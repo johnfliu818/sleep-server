@@ -1,3 +1,5 @@
+#!/usr/bin/env 
+
 var sleepserver = require('./index.js')
 
 // console.log(process.argv)
