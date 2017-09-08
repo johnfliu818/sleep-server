@@ -1,4 +1,4 @@
-#!/usr/bin/env 
+#!/usr/bin/env node
 
 var sleepserver = require('./index.js')
 
