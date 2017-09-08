@@ -19,6 +19,56 @@ Type `http://localhost:3600/sleep/1000` in browser to test it. (here 1000 tells 
 
 Now the server is running, we can test it using sleep-client, which came in the same package.
 
-Open another terminal or command prompt, and type `sleep-client http://localhost:3600/sleep/5000`
+Open another terminal or command prompt, and type
+
+`sleep-client http://localhost:3600/sleep/5000`
 
 It should run for about 15 seconds, periodically reporting back the average response time. An efficient server should have the average response time very close to 5000ms.
+
+
+## Load testing with sample proxy server
+
+We are going to create a simple proxy server that sits between `sleep-server` and `sleep-client`. We will see how much latency this extra layer of indirection introduces.
+
+First make sure your sleep-server is still running on port 3600. Then create the following testsleep.js script on a convenient directory:
+
+    var http = require('http')
+
+    var port = 3800
+    var url = 'http://localhost:3600/sleep/5000'
+
+    function handleRequest(req, resp) {
+        // console.log(req.url)
+
+        function callback(response) {
+            var str = ''
+            response.on('data', function (chunk) {
+                str += chunk
+            })
+            response.on('end', function () {
+                // console.log(str)
+                resp.end(str)
+            })
+        }
+    
+        http.request(url, callback).end()
+    }
+
+    var server = http.createServer(handleRequest)
+    server.listen(port, function() {
+        console.log("listening on port " + port)
+    })
+
+Go to that directory, and run `node testsleep.js`. It should run a simple server that would proxy all requests to `http://localhost:3600/sleep/5000`.
+
+Run your sleep-client again, but this time hit the proxy server instead:
+
+`sleep-client http://localhost:3800`
+
+On my machine, the average response time is around 5002ms, which is almost the same as before.
+
+
+## Load testing your web server
+
+If your perform the above experiment using ASP.Net `async` on an IIS server, you will get terrible result because the server would start to slow down when it hits thread limit. Or if your microservice infrastructure involves forwarding each request through multiple API nodes, you might want to know how much latency is introduced. Simply use `sleep-server` as the final node on the microservice chain, and create some simple mock services to sit in front of it. Now load test the chain and see how much latency is introduced.
+
