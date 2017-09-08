@@ -70,5 +70,5 @@ On my machine, the average response time is around 5002ms, which is almost the s
 
 ## Load testing your web server
 
-If your perform the above experiment using ASP.Net `async` on an IIS server, you will get terrible result because the server would start to slow down when it hits thread limit. Or if your microservice infrastructure involves forwarding each request through multiple API nodes, you might want to know how much latency is introduced. Simply use `sleep-server` as the final node on the microservice chain, and create some simple mock services to sit in front of it. Now load test the chain and see how much latency is introduced.
+If your perform the above experiment using ASP.Net without `async` on an IIS server, you would get terrible result because the server would start to slow down when it hits thread limit. Or if your microservice infrastructure involves forwarding each request through multiple API nodes, you might want to know how much latency is introduced. Simply use `sleep-server` as the final node on the microservice chain, and create some simple mock services to sit in front of it. Now load test the chain and see how much latency is introduced.
 
