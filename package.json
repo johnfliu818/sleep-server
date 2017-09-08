@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Emulates a server that has variable response time.",
   "main": "index.js",
+  "bin": {
+    "sleep-server": "./server.js",
+    "sleep-client": "./client.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
