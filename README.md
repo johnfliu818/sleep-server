@@ -1,6 +1,9 @@
 # sleep-server
 Emulates a server that has variable response time.
 
+
+## Purpose
+
 Sometimes when I encounter a web server with slow response time, I would like to know whether the underlying database/resource server is slow, or there is an issue with my web server setup. This is especially true when dealing with Microsoft IIS + ASP.Net, which has issues dealing with too many threads with default configuration.
 
 `sleep-server` acts as a dummy database/resource server, with a well defined response time, so you can determine the performance characteristic of your web server under load.
