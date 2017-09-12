@@ -10,8 +10,7 @@ if (process.argv.length < 3) {
     var duration = process.argv.length > 4 ? parseInt(process.argv[4]) : 10
     var repeats = Math.floor(duration * 1000 / delay)
 
-    var max = 0
-    var min = 0
+    var times = []
     var totaltime = 0
     var totalRequests = 0
     var totalReturns = 0
@@ -27,12 +26,23 @@ if (process.argv.length < 3) {
             totalReturns += 1
 
             var endtime = new Date()
-            totaltime += (endtime - starttime)
+            var responsetime = (endtime - starttime)
+            times.push(responsetime)
+            totaltime += responsetime
 
             if (totalReturns % 100 === 0) {
                 console.log("average time = " + (totaltime / totalReturns) + "ms")
             }
-
+            // only show final stats if more than 20 repeats (so we get enough data points, and also the percentiles indexer might be wrong otherwise)
+            // show stats when done
+            if (totalReturns >= repeats && repeats >= 20) {
+                times.sort()
+                console.log("-----------------")
+                console.log("max: " + times[totalReturns-1] + "ms")
+                console.log("90%: " + times[Math.ceil(totalReturns * 0.9)-1] + "ms")
+                console.log("75%: " + times[Math.ceil(totalReturns * 0.75)-1] + "ms")
+                console.log("min: " + times[0] + "ms")
+            }
         }
 
         http.request(url, callback).end()
