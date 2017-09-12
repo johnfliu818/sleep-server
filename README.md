@@ -33,24 +33,15 @@ We are going to create a simple proxy server that sits between `sleep-server` an
 First make sure your sleep-server is still running on port 3600. Then create the following testsleep.js script on a convenient directory:
 
     var http = require('http')
-
     var port = 3800
     var url = 'http://localhost:3600/sleep/5000'
 
     function handleRequest(req, resp) {
-        // console.log(req.url)
-
         function callback(response) {
             var str = ''
-            response.on('data', function (chunk) {
-                str += chunk
-            })
-            response.on('end', function () {
-                // console.log(str)
-                resp.end(str)
-            })
+            response.on('data', function (chunk) { str += chunk })
+            response.on('end', function () { resp.end(str) })
         }
-    
         http.request(url, callback).end()
     }
 
