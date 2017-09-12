@@ -3,7 +3,8 @@
 var http = require('http')
 
 if (process.argv.length < 3) {
-    console.log("usage: sleep-client <url> [delay] [duration]")
+    console.log("usage: sleep-client <url> [delay in ms] [duration in seconds]")
+    console.log("e.g. : sleep-client http://localhost:3600/sleep/5000")
 } else {
     var url = process.argv[2]
     var delay = process.argv.length > 3 ? parseInt(process.argv[3]) : 10
