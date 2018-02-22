@@ -1,6 +1,6 @@
 {
   "name": "sleep-server",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Emulates a server that has variable response time.",
   "main": "index.js",
   "bin": {
@@ -15,10 +15,16 @@
     "url": "git+https://github.com/johnfliu818/sleep-server.git"
   },
   "author": "johnfliu",
-  "keywords": ["sleep", "diagnostics", "server", "mock"],
+  "keywords": [
+    "sleep",
+    "diagnostics",
+    "server",
+    "mock"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/johnfliu818/sleep-server/issues"
   },
-  "homepage": "https://github.com/johnfliu818/sleep-server#readme"
+  "homepage": "https://github.com/johnfliu818/sleep-server#readme",
+  "dependencies": {}
 }
