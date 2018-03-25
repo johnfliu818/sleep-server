@@ -1,6 +1,6 @@
 {
   "name": "sleep-server",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Emulates a server that has variable response time.",
   "main": "index.js",
   "bin": {
@@ -8,7 +8,9 @@
     "sleep-client": "./client.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "client": "node client.js",
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -26,5 +28,12 @@
     "url": "https://github.com/johnfliu818/sleep-server/issues"
   },
   "homepage": "https://github.com/johnfliu818/sleep-server#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "mocha": "^5.0.5"
+  }
 }

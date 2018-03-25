@@ -1,4 +1,6 @@
 # sleep-server
+[![NPM](https://nodei.co/npm/sleep-server.png)](https://npmjs.org/package/sleep-server)
+
 Emulates a server that has variable response time.
 
 
