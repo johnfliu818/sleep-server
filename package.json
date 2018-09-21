@@ -1,6 +1,6 @@
 {
   "name": "sleep-server",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "Emulates a server that has variable response time.",
   "main": "index.js",
   "bin": {
@@ -31,11 +31,11 @@
   "dependencies": {},
   "devDependencies": {
     "chai": "^4.1.2",
-    "eslint": "^4.9.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.7.0",
-    "mocha": "^5.0.5",
-    "request": "^2.85.0",
+    "eslint": "^5.6.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "mocha": "^5.2.0",
+    "request": "^2.88.0",
     "request-promise": "^4.2.2"
   }
 }
