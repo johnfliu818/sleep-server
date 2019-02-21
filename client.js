@@ -15,6 +15,12 @@ if (process.argv.length < 3) {
   var totaltime = 0;
   var totalRequests = 0;
   var totalReturns = 0;
+  var totalLength = 0;
+
+  var keepAliveAgent = new http.Agent({ keepAlive: true });
+  var options = {
+    agent: keepAliveAgent,
+  };
 
   function request() { // eslint-disable-line
     if (totalRequests >= repeats) return null;
@@ -23,30 +29,39 @@ if (process.argv.length < 3) {
 
     var starttime = new Date();
     function callback(response) { // eslint-disable-line
+      var responseString = '';
+      response.on('data', function (data) {
+        responseString += data;
+      });
+      response.on('end', function () {
+        totalLength += responseString.length;
+        totalReturns += 1;
+
+        var endtime = new Date();
+        var responsetime = (endtime - starttime);
+        times.push(responsetime);
+        totaltime += responsetime;
+  
+        if (totalReturns % 100 === 0) {
+          console.log('average time = ' + (totaltime / totalReturns) + 'ms');
+        }
+        // only show final stats if more than 20 repeats (so we get enough data points, and also the percentiles indexer might be wrong otherwise)
+        // show stats when done
+        if (totalReturns >= repeats && repeats >= 20) {
+          times.sort();
+          console.log('-----------------');
+          console.log('total requests: ' + totalReturns);
+          console.log('total length: ' + totalLength);
+          console.log('max: ' + times[totalReturns-1] + 'ms');
+          console.log('90%: ' + times[Math.ceil(totalReturns * 0.9)-1] + 'ms');
+          console.log('75%: ' + times[Math.ceil(totalReturns * 0.75)-1] + 'ms');
+          console.log('min: ' + times[0] + 'ms');
+        }
+      });
       // console.log('got something')
-      totalReturns += 1;
-
-      var endtime = new Date();
-      var responsetime = (endtime - starttime);
-      times.push(responsetime);
-      totaltime += responsetime;
-
-      if (totalReturns % 100 === 0) {
-        console.log('average time = ' + (totaltime / totalReturns) + 'ms');
-      }
-      // only show final stats if more than 20 repeats (so we get enough data points, and also the percentiles indexer might be wrong otherwise)
-      // show stats when done
-      if (totalReturns >= repeats && repeats >= 20) {
-        times.sort();
-        console.log('-----------------');
-        console.log('max: ' + times[totalReturns-1] + 'ms');
-        console.log('90%: ' + times[Math.ceil(totalReturns * 0.9)-1] + 'ms');
-        console.log('75%: ' + times[Math.ceil(totalReturns * 0.75)-1] + 'ms');
-        console.log('min: ' + times[0] + 'ms');
-      }
     }
 
-    http.request(url, callback).end();
+    http.request(url, options, callback).end();
   }
 
   request();
