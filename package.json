@@ -1,11 +1,12 @@
 {
   "name": "sleep-server",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Emulates a server that has variable response time.",
   "main": "index.js",
   "bin": {
     "sleep-server": "./server.js",
-    "sleep-client": "./client.js"
+    "sleep-client": "./client.js",
+    "sleep-server-cluster": "./cluster.js"
   },
   "scripts": {
     "start": "node server.js",
