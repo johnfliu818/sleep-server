@@ -3,13 +3,27 @@
 var http = require('http');
 
 if (process.argv.length < 3) {
-  console.log('usage: sleep-client <url> [delay in ms] [duration in seconds]');
+  console.log('usage: sleep-client <url> [requests per second] [duration in seconds]');
   console.log('e.g. : sleep-client http://localhost:3600/sleep/5000');
 } else {
   var url = process.argv[2];
-  var delay = process.argv.length > 3 ? parseInt(process.argv[3]) : 10;
+  var reqPerSec = process.argv.length > 3 ? parseInt(process.argv[3]) : 100;
   var duration = process.argv.length > 4 ? parseInt(process.argv[4]) : 10;
-  var repeats = Math.floor(duration * 1000 / delay);
+  var repeats = Math.floor(duration * reqPerSec);
+  var concurrency;
+  var delay;
+  if (reqPerSec <= 100) {
+    concurrency = 1;
+    delay = 1000 / reqPerSec;
+  } else if (reqPerSec <= 1000) {
+    concurrency = 10;
+    delay = 10000 / reqPerSec;
+  } else if (reqPerSec <= 10000) {
+    concurrency = Math.floor(reqPerSec / 100);
+    delay = 10;
+  } else {
+    throw new Error('Only supports up to 10000 requests per seconds');
+  }
 
   var times = [];
   var totaltime = 0;
@@ -39,20 +53,23 @@ if (process.argv.length < 3) {
 
         var endtime = new Date();
         var responsetime = (endtime - starttime);
+        // if (typeof responsetime !== 'number') throw new Error('not a number');
         times.push(responsetime);
         totaltime += responsetime;
   
-        if (totalReturns % 100 === 0) {
-          console.log('average time = ' + (totaltime / totalReturns) + 'ms');
-        }
+        // if (totalReturns % 100 === 0) {
+        //   console.log('average time = ' + (totaltime / totalReturns) + 'ms');
+        // }
         // only show final stats if more than 20 repeats (so we get enough data points, and also the percentiles indexer might be wrong otherwise)
         // show stats when done
-        if (totalReturns >= repeats && repeats >= 20) {
-          times.sort();
+        if (totalReturns >= repeats && repeats >= 100) {
+          times.sort(function (a, b) { return a - b; });
           console.log('-----------------');
-          console.log('total requests: ' + totalReturns);
+          console.log('total requested: ' + totalRequests);
+          console.log('total returned: ' + totalReturns);
           console.log('total length: ' + totalLength);
           console.log('max: ' + times[totalReturns-1] + 'ms');
+          console.log('98%: ' + times[Math.ceil(totalReturns * 0.98)-1] + 'ms');
           console.log('90%: ' + times[Math.ceil(totalReturns * 0.9)-1] + 'ms');
           console.log('75%: ' + times[Math.ceil(totalReturns * 0.75)-1] + 'ms');
           console.log('min: ' + times[0] + 'ms');
@@ -64,5 +81,13 @@ if (process.argv.length < 3) {
     http.request(url, options, callback).end();
   }
 
-  request();
+  for (var thread = 0; thread < concurrency; thread++) request();
+
+  var statusTimer = setInterval(function () {
+    if (totalReturns >= repeats) {
+      clearInterval(statusTimer);
+    } else {
+      console.log('average time = ' + (totaltime / totalReturns) + 'ms');
+    }
+  }, 1500);
 }

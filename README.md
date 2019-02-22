@@ -34,7 +34,7 @@ Open another terminal or command prompt, and type
 
     sleep-client http://localhost:3600/sleep/5000
 
-It should run for about 15 seconds, periodically reporting back the average response time. An efficient server should have the average response time very close to 5000ms.
+It should run for about 10 seconds, periodically reporting back the average response time. An efficient server should have the average response time very close to 5000ms.
 
 
 ## Load testing with sample proxy server
