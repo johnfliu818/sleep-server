@@ -1,6 +1,6 @@
 {
   "name": "sleep-server",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Emulates a server that has variable response time.",
   "main": "index.js",
   "bin": {
